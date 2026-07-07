@@ -12,6 +12,8 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 
+import java.util.List;
+
 /**
  * Trade reading and evaluation utilities.
  *
@@ -39,6 +41,11 @@ public class TradeUtil {
         // Registry lookup — confirmed from working mod line 707
         var reg = mc.level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
 
+        List<String> targets = cfg.targetEnchantmentList();
+        if (targets.isEmpty()) {
+            return new TradeResult(false, "No target enchantments set");
+        }
+
         String bestSeen = "Nothing";
 
         for (MerchantOffer offer : offers) {
@@ -59,7 +66,10 @@ public class TradeUtil {
                 String desc = enchantmentId + " " + toRoman(level) + " for " + cost + " emeralds";
                 bestSeen = desc;
 
-                if (enchantmentId.equals(cfg.targetEnchantment)
+                boolean matchesAnyTarget = targets.stream()
+                        .anyMatch(target -> target.equalsIgnoreCase(enchantmentId));
+
+                if (matchesAnyTarget
                         && level >= cfg.minLevel
                         && cost <= cfg.maxEmeraldCost) {
                     return new TradeResult(true, desc);

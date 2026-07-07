@@ -25,20 +25,18 @@ public class RerollerConfigScreen {
                 // -------------------------------------------------------
                 .category(ConfigCategory.createBuilder()
                         .name(Component.literal("Target"))
-                        .tooltip(Component.literal("Configure what enchanted book to search for."))
+                        .tooltip(Component.literal("Configure what enchanted books to search for."))
 
                         .option(Option.<String>createBuilder()
-                                .name(Component.literal("Target Enchantment"))
+                                .name(Component.literal("Target Enchantments"))
                                 .description(OptionDescription.of(Component.literal(
-                                        "The namespaced enchantment ID to search for.\n\n" +
-                                        "Examples:\n" +
-                                        "  minecraft:mending\n" +
-                                        "  minecraft:protection\n" +
-                                        "  minecraft:sharpness\n" +
-                                        "  minecraft:efficiency\n\n" +
+                                        "A comma-separated list of namespaced enchantment IDs to search for.\n" +
+                                        "The reroller stops as soon as ANY one of these is offered.\n\n" +
+                                        "Example:\n" +
+                                        "  minecraft:mending, minecraft:sharpness, minecraft:efficiency\n\n" +
                                         "Always use the full minecraft: prefix."
                                 )))
-                                .binding("", () -> cfg.targetEnchantment, val -> cfg.targetEnchantment = val)
+                                .binding("", () -> cfg.targetEnchantments, val -> cfg.targetEnchantments = val)
                                 .controller(StringControllerBuilder::create)
                                 .build()
                         )

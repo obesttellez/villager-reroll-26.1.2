@@ -9,6 +9,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.util.CommonColors;
 
+import java.util.List;
+
 /**
  * HUD overlay for the Villager Trade Reroller.
  *
@@ -58,7 +60,8 @@ public class RerollerHud {
 			default -> COLOR_WHITE;
 		};
 
-		String target = cfg.targetEnchantment.isEmpty() ? "not set" : cfg.targetEnchantment;
+		List<String> targetList = cfg.targetEnchantmentList();
+		String target = targetList.isEmpty() ? "not set" : String.join(", ", targetList);
 		String lecternPos = cfg.hasLecternPos() ? cfg.lecternPosString() : "NOT SET — press L in-game";
 
 		String[] lines = {

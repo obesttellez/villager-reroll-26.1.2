@@ -11,6 +11,8 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
 
 public class RerollerConfig {
 
@@ -48,8 +50,10 @@ public class RerollerConfig {
     }
 
     public static class Config {
-        // Target enchantment
-        public String targetEnchantment = "";
+        // Comma-separated list of namespaced enchantment IDs, e.g.
+        // "minecraft:mending, minecraft:sharpness, minecraft:efficiency"
+        // The reroller stops as soon as ANY of these is offered.
+        public String targetEnchantments = "";
         public int minLevel = 1;
         public int maxEmeraldCost = 64;
 
@@ -65,6 +69,21 @@ public class RerollerConfig {
 
         // Display
         public boolean hudEnabled = true;
+
+        /**
+         * Parses {@link #targetEnchantments} into a clean list of enchantment IDs,
+         * trimming whitespace and dropping empty entries. Returns an empty list
+         * if nothing is configured.
+         */
+        public List<String> targetEnchantmentList() {
+            if (targetEnchantments == null || targetEnchantments.isBlank()) {
+                return List.of();
+            }
+            return Arrays.stream(targetEnchantments.split(","))
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .toList();
+        }
 
         /**
          * Returns the lectern BlockPos, or null if not set.

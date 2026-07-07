@@ -83,8 +83,8 @@ public class RerollController {
 				if (!HotbarUtil.hasItemInHotbar(player, Items.LECTERN)) {
 					stop(client, "No lectern in hotbar!"); return;
 				}
-				if (RerollerConfig.get().targetEnchantment == null || RerollerConfig.get().targetEnchantment.isEmpty()) {
-					stop(client, "No target enchantment set in config!"); return;
+				if (RerollerConfig.get().targetEnchantmentList().isEmpty()) {
+					stop(client, "No target enchantments set in config!"); return;
 				}
 				if (!RerollerConfig.get().hasLecternPos()) {
 				stop(client, "No lectern position set! Use L key or Mod Menu config."); return;
