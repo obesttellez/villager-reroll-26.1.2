@@ -34,26 +34,18 @@ jobs:
         run: ./gradlew build --stacktrace
         continue-on-error: true
 
-      - name: Inspect Options and Gui classes
+      - name: Inspect Gui and Hud classes
         run: |
-          echo "--- Locating Options.class ---"
-          OPTIONS_JAR=$(find ~/.gradle/caches/fabric-loom -name "*.jar" 2>/dev/null | xargs -I{} sh -c 'unzip -l "{}" 2>/dev/null | grep -q "net/minecraft/client/Options.class" && echo {}' | head -n 1)
-          echo "Found in: $OPTIONS_JAR"
-          if [ -n "$OPTIONS_JAR" ]; then
-            javap -p -classpath "$OPTIONS_JAR" net.minecraft.client.Options | grep -i -E "hide|gui|hud"
-          else
-            echo "Could not locate a jar containing Options.class"
-          fi
+          JAR=$(find ~/.gradle/caches/fabric-loom -path "*minecraft-merged-deobf*.jar" 2>/dev/null | head -n 1)
+          echo "Using jar: $JAR"
 
           echo ""
-          echo "--- Locating Gui / Hud classes ---"
-          find ~/.gradle/caches/fabric-loom -name "*.jar" 2>/dev/null | while read jar; do
-            MATCHES=$(unzip -l "$jar" 2>/dev/null | grep -E "net/minecraft/client/gui/(Gui|Hud)\.class")
-            if [ -n "$MATCHES" ]; then
-              echo "In $jar:"
-              echo "$MATCHES"
-            fi
-          done
+          echo "--- net.minecraft.client.gui.Gui ---"
+          javap -p -classpath "$JAR" net.minecraft.client.gui.Gui | grep -i -E "hide|hidden|render|gui"
+
+          echo ""
+          echo "--- net.minecraft.client.gui.Hud ---"
+          javap -p -classpath "$JAR" net.minecraft.client.gui.Hud | grep -i -E "hide|hidden|render"
 
       - name: Upload built jar
         if: success()
