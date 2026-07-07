@@ -47,7 +47,7 @@ public class RerollerHud {
 		if (state == RerollState.IDLE) return;
 
 		Minecraft mc = Minecraft.getInstance();
-		if (mc.options.hideGui) return;
+		if (mc.gui.hud.isHidden()) return;
 
 		int statusColor = switch (state) {
 			case FOUND -> COLOR_GREEN;

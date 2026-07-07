@@ -103,7 +103,7 @@ public class RerollerConfigScreen {
                                 BlockPos pos = blockHit.getBlockPos();
                                 cfg.setLecternPos(pos);
                                 RerollerConfig.save();
-                                mc.setScreen(create(parent));
+                                mc.gui.setScreen(create(parent));
                                 } else if (mc.player != null) {
                                  mc.player.sendSystemMessage(Component.literal(
                                     "[Reroller] Aim at a block first, then click this button."
@@ -128,7 +128,7 @@ public class RerollerConfigScreen {
                                 .action((screen, opt) -> {
                                     cfg.clearLecternPos();
                                     RerollerConfig.save();
-                                    mc.setScreen(create(parent));
+                                    mc.gui.setScreen(create(parent));
                                 })
                                 .build()
                         )
